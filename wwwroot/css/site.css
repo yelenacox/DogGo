@@ -24,9 +24,15 @@ a {
   border-color: #1861ac;
 }
 
-/* Sticky footer styles
+.bg-info {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+    /* Sticky footer styles
 -------------------------------------------------- */
-html {
+    html {
   font-size: 14px;
 }
 @media (min-width: 768px) {
@@ -54,8 +60,8 @@ button.accept-policy {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
