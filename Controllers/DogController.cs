@@ -71,8 +71,14 @@ namespace DogGo.Controllers
         // GET: DogController/Edit/5
         public ActionResult Edit(int id)
         {
+            
             Dog dog = _dogRepo.GetDogById(id);
+
             if (dog == null)
+            {
+                return NotFound();
+            }
+            if (dog.OwnerId != GetCurrentUserId())
             {
                 return NotFound();
             }
@@ -84,6 +90,7 @@ namespace DogGo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Dog dog)
         {
+           
             try
             {
                 _dogRepo.UpdateDog(dog);
