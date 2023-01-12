@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace DogGo.Controllers
 {
@@ -31,9 +32,21 @@ namespace DogGo.Controllers
         // GET: Walkers
         public ActionResult Index()
         {
-            List<Walker> walkers = _walkerRepo.GetAllWalkers();
+            int ownerId = GetCurrentUserId();
+            Owner owner = _ownerRepo.GetOwnerById(ownerId);
 
-            return View(walkers);
+            if (ownerId > 0)
+            {
+                List<Walker> walkers = _walkerRepo.GetWalkersInNeighborhood(owner.NeighborhoodId);
+                return View(walkers);
+            } 
+            else
+            {
+                List<Walker> walkers = _walkerRepo.GetAllWalkers();
+                return View(walkers);
+            };
+                               
+
         }
 
         // GET: Walkers/Details/5
@@ -114,6 +127,15 @@ namespace DogGo.Controllers
             {
                 return View();
             }
+        }
+
+        private int GetCurrentUserId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id != null)
+            {
+                return int.Parse(id);
+            } else { return 0; };
         }
     }
 }
